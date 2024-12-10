@@ -2,10 +2,17 @@
 <html>
 <head>
     <title>Odot - To-Do List</title>
-    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Welcome to Odot!</h1>
-    <h2>Lets Go!!</h2>
+    <h2>Let's Go!!</h2>
+    {% if 'user_id' in session %}
+        <p>Welcome, {{ session['username'] }}!</p>
+        <a href="/logout">Logout</a>
+    {% else %}
+        <a href="/register">User Registration</a><br>
+        <a href="/login">Login</a>
+    {% endif %}
 </body>
-</html> 
+</html>
