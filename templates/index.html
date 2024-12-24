@@ -1,18 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Odot - To-Do List</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Home</title>
 </head>
 <body>
-    <h1>Welcome to Odot!</h1>
-    <h2>Let's Go!!</h2>
-    {% if 'user_id' in session %}
-        <p>Welcome, {{ session['username'] }}!</p>
-        <a href="/logout">Logout</a>
-    {% else %}
-        <a href="/register">User Registration</a><br>
-        <a href="/login">Login</a>
-    {% endif %}
+    <h1>Welcome to the Task Manager</h1>
+    <a href="/register">Register</a>
+    <a href="/login">Login</a>
 </body>
 </html>

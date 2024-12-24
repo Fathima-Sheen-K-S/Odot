@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add Task</title>
+</head>
+<body>
+    <h1>Add Task</h1>
+    <form method="POST">
+        <input type="text" name="task" placeholder="Task" required>
+        <label for="priority">Priority:</label>
+        <select name="priority" required>
+            <option value="1">High</option>
+            <option value="2">Medium</option>
+            <option value="3">Low</option>
+        </select>
+        <label for="category">Category:</label>
+        <select name="category" required>
+            <option value="Education">Education</option>
+            <option value="Work">Work</option>
+            <option value="Family">Family</option>
+            <option value="Personal">Personal</option>
+        </select>
+        <button type="submit">Add Task</button>
+    </form>
+</body>
+</html>

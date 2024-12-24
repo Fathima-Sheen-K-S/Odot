@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>View Tasks</title>
+</head>
+<body>
+    <h1>Your Tasks</h1>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <span>
+                    {{ task[1] }} 
+                    (Priority: {% if task[2] == 1 %}High{% elif task[2] == 2 %}Medium{% else %}Low{% endif %})
+                    - Category: {{ task[3] }}
+                </span>
+                <form action="/mark-task-done/{{ task[0] }}" method="POST" style="display:inline;">
+                    <input type="checkbox" 
+                           {% if task[4] == 1 %}checked{% endif %}
+                           onchange="this.form.submit()"> 
+                    Done
+                </form>
+                <form action="/delete-task/{{ task[0] }}" method="POST" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/userhome">Go Back Home</a>
+</body>
+</html>

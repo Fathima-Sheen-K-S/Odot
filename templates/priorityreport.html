@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Priority Report</title>
+</head>
+<body>
+    <h1>Priority Report</h1>
+    {% if graph_url %}
+        <img src="{{ graph_url }}" alt="Priority Report Chart" />
+    {% else %}
+        <p>No graph available.</p>
+    {% endif %}
+    <br><a href="/userhome">Back to User Home</a>
+</body>
+</html>
