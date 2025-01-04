@@ -1,15 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Priority Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            padding: 20px;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background-color: #fff;
+            width: 100%;
+            max-width: 800px;
+           
+            padding: 100px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 30px; /* Spacing between title and content */
+        }
+
+        .graph-container {
+            margin-top: 20px;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .graph-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .no-graph {
+            font-size: 16px;
+            color: #ff4d4d;
+            margin-top: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            font-size: 16px;
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            color: #0056b3;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Priority Report</h1>
-    {% if graph_url %}
-        <img src="{{ graph_url }}" alt="Priority Report Chart" />
-    {% else %}
-        <p>No graph available.</p>
-    {% endif %}
-    <br><a href="/userhome">Back to User Home</a>
+
+    <div class="card">
+        <h1>Priority Report</h1>
+        <div class="graph-container">
+            {% if graph_url %}
+                <img src="{{ graph_url }}" alt="Priority Report Chart">
+            {% else %}
+                <p class="no-graph">No graph available.</p>
+            {% endif %}
+        </div>
+        <a href="/userhome" class="back-link">Back to User Home</a>
+    </div>
+
 </body>
 </html>

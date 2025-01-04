@@ -427,7 +427,7 @@ def change_password():
     return render_template('changepassword.html')  # Render the change password form if GET request
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])  # Add methods=['POST']
 def logout():
     # Remove the user from the session
     session.pop('user_id', None)

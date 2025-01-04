@@ -4,9 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            padding: 20px;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background-color: #fff;
+            width: 100%;
+            max-width: 800px;
+            padding: 150px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .chart-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            font-size: 16px;
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            color: #0056b3;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Task Report</h1>
-    <img src="{{ chart_url }}" alt="Task Report Chart" style="display: block; margin: auto;">
+
+    <h2>Report Based on Tasks</h2>
+    <div class="card">
+        <h1>Task Report</h1>
+        <div class="chart-container">
+            {% if chart_url %}
+                <img src="{{ chart_url }}" alt="Task Report Chart">
+            {% else %}
+                <p class="no-graph">No chart available.</p>
+            {% endif %}
+        </div>
+        <a href="/userhome" class="back-link">Back to Home</a>
+    </div>
+
 </body>
 </html>
