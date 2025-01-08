@@ -24,7 +24,7 @@
         }
 
         header {
-            background-color: #007BFF;
+            background-color: #1F3A64;
             color: white;
             padding: 20px;
             width: 100%;
@@ -49,6 +49,7 @@
 
         .container ul {
             list-style-type: none;
+            padding: 0;
         }
 
         .container li {
@@ -58,6 +59,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .container li:hover {
+            background-color: #f1f1f1;
         }
 
         .priority-high {
@@ -89,6 +95,7 @@
             font-size: 16px;
             cursor: pointer;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
 
         .container button:hover {
@@ -125,7 +132,7 @@
                 <span>
                     <strong>{{ task[1] }}</strong> 
                     - 
-                    <span class="
+                    <span class=" 
                         {% if task[2] == 1 %}priority-high{% elif task[2] == 2 %}priority-medium{% else %}priority-low{% endif %}
                     ">
                         {% if task[2] == 1 %}High{% elif task[2] == 2 %}Medium{% else %}Low{% endif %}

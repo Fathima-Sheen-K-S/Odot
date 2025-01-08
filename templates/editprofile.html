@@ -76,6 +76,16 @@
             background-color: #0056b3;
         }
 
+        .message {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #d9534f; /* Error color */
+        }
+
+        .success-message {
+            color: #5bc0de; /* Success color */
+        }
+
         a {
             font-size: 16px;
             color: #007BFF;
@@ -116,6 +126,9 @@
             <input type="text" id="new_username" name="new_username" required>
             <button type="submit">Update Username</button>
         </form>
+
+        <!-- Success/Error Message Section (conditionally visible) -->
+        
         <br><a href="/view-profile">Back to Profile</a>
     </div>
 

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Home - ODOT Task Manager</title>
+    <title>User Home - ODOT</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         /* Reset some styles for consistency */
         * {
@@ -15,21 +16,24 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f1f5f9;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+            align-items: center; /* Center both vertically and horizontally */
+            min-height: 100vh; /* Ensure full height */
             flex-direction: column;
-            text-align: center;
+            padding: 20px; /* Added padding to body */
         }
 
         header {
-            background-color: #007BFF;
+            background: linear-gradient(135deg, #1E3A8A, #3B82F6);
             color: white;
-            padding: 20px;
-            text-align: center;
+            padding: 30px 20px;
             width: 100%;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            text-align: center; /* Center the header content */
         }
 
         header h1 {
@@ -41,76 +45,121 @@
         header p {
             font-size: 18px;
             font-weight: 400;
+            opacity: 0.8;
         }
 
         .container {
             background-color: white;
             width: 100%;
-            max-width: 600px;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
+            max-width: 650px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: -20px;
+            text-align: center; /* Center the content inside the container */
         }
 
         .container h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
+            font-size: 30px;
+            margin-bottom: 25px;
             color: #333;
+            font-weight: 600;
         }
 
         .container a {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the text and icon */
             text-decoration: none;
-            font-size: 18px;
-            color: #007BFF;
-            margin-bottom: 10px;
+            font-size: 20px;
+            color: #1E3A8A;
+            margin-bottom: 15px;
             font-weight: 500;
-            transition: color 0.3s ease;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
         .container a:hover {
-            color: #0056b3;
+            background-color: #f1f5f9;
+            transform: scale(1.05);
+        }
+
+        .container a i {
+            margin-right: 15px;
+            font-size: 22px;
         }
 
         .logout {
             margin-top: 30px;
-            background-color: #FF0000;
+            background-color: #FF6347;
             color: white;
-            padding: 12px 30px;
+            padding: 15px 30px;
             font-size: 18px;
-            border-radius: 5px;
+            border-radius: 10px;
             border: none;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
         .logout:hover {
-            background-color: #d40000;
+            background-color: #e04e36;
         }
 
         footer {
-            margin-top: 30px;
+            margin-top: 40px;
             color: #555;
             font-size: 14px;
+            text-align: center; /* Center the footer content */
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px; /* Reduced padding for smaller screens */
+            }
+
+            .container {
+                width: 100%;
+                padding: 25px;
+            }
+
+            .container h2 {
+                font-size: 24px;
+            }
+
+            .container a {
+                font-size: 18px;
+            }
+
+            .logout {
+                font-size: 16px;
+                padding: 12px 25px;
+            }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Welcome to ODOT Task Manager</h1>
+    <h1>Welcome to ODOT...</h1>
     <p>Organize, Optimize, Own It</p>
 </header>
 
 <div class="container">
     <h2>Welcome, {{ username }}</h2>
     <!-- Links to various sections -->
-    <a href="/add-task">Add Task</a>
-    <a href="/view-tasks">View Tasks</a>
-    <a href="/view-report">View Report</a>
-    <a href="/view-priority-report">View Priority Report</a>
-    <a href="/view-profile">View Profile</a>
+    <a href="/add-task"><i class="fas fa-plus-circle"></i> Add Task</a>
+    <a href="/view-tasks"><i class="fas fa-tasks"></i> View Tasks</a>
+    <a href="/view-report"><i class="fas fa-chart-line"></i> View Report</a>
+    <a href="/view-priority-report"><i class="fas fa-exclamation-circle"></i> View Priority Report</a>
+    <a href="/view-profile"><i class="fas fa-user"></i> View Profile</a>
+    <a href="/complaints"><i class="fas fa-comment-dots"></i> Complaints</a>
+    <a href="/feedbacks"><i class="fas fa-comments"></i> Feedbacks</a>
     
     <!-- Logout Button -->
     <form action="/logout" method="POST">

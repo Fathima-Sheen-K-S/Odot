@@ -23,16 +23,13 @@ def register():
         email = request.form['email']
         password = request.form['password']
 
-        # Hash the password for security
-        hashed_password = generate_password_hash(password)
-
         try:
             with sqlite3.connect('database.db') as connection:
                 cursor = connection.cursor()
                 cursor.execute('''
                     INSERT INTO users (username, email, password) 
                     VALUES (?, ?, ?)
-                ''', (username, email, hashed_password))
+                ''', (username, email, password))  # Store the password as plain text
                 connection.commit()
                 flash('Registration successful!', 'success')
                 return redirect('/login')
@@ -40,7 +37,6 @@ def register():
             flash('Email already exists!', 'error')
             return redirect('/register')
     return render_template('userregister.html')
-
 # Login route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -51,20 +47,42 @@ def login():
         try:
             with sqlite3.connect('database.db') as connection:
                 cursor = connection.cursor()
+
+                # Check if the user is an admin
+                cursor.execute('SELECT * FROM admins WHERE email = ?', (email,))
+                admin = cursor.fetchone()
+
+                if admin:
+                    print(f'Admin found: {admin}')
+                    if admin[2] == password:  # Admin login
+                        session['admin_id'] = admin[0]
+                        session['admin_username'] = admin[1]
+                        flash('Admin login successful!', 'success')
+                        return redirect('/admindashboard')
+                    else:
+                        print('Admin password mismatch')
+
+                # Check if the user is a regular user
                 cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
                 user = cursor.fetchone()
 
-                if user and check_password_hash(user[3], password):
-                    session['user_id'] = user[0]
-                    session['username'] = user[1]
-                    flash('Login successful!', 'success')
-                    return redirect('/userhome')
-                else:
-                    flash('Invalid email or password!', 'error')
-        except Exception:
-            flash('An error occurred. Please try again.', 'error')
-    return render_template('login.html')
+                if user:
+                    print(f'User found: {user}')
+                    if user[3] == password:  # User login
+                        session['user_id'] = user[0]
+                        session['username'] = user[1]
+                        flash('Login successful!', 'success')
+                        return redirect('/userhome')
+                    else:
+                        print('User password mismatch')
 
+                print(f'Failed login attempt for email: {email}')
+                flash('Invalid email or password!', 'error')
+
+        except Exception as e:
+            flash(f'An error occurred: {str(e)}', 'error')
+
+    return render_template('login.html')
 # User Home
 @app.route('/userhome')
 def userhome():
@@ -436,6 +454,160 @@ def logout():
     flash('You have been logged out successfully.', 'success')
     
     return redirect('/login')  # Redirect to the login page after logging out
+
+@app.route('/admin-logout', methods=['POST'])
+def admin_logout():
+    # Remove the admin from the session
+    session.pop('admin_id', None)
+    session.pop('admin_username', None)
+    
+    flash('Admin has been logged out successfully.', 'success')
+    
+    return redirect('/login')  # Redirect to the login page after logging out
+
+
+
+@app.route('/admindashboard')
+def admindashboard():
+    if 'admin_id' not in session:
+        flash('Please log in as an admin to access this page.', 'error')
+        return redirect('/login')
+
+    return render_template('admindashboard.html', admin_username=session['admin_username'])
+
+@app.route('/view-users')
+def view_users():
+    try:
+        with sqlite3.connect('database.db') as connection:
+            cursor = connection.cursor()
+            cursor.execute('SELECT username, email FROM users')
+            users = cursor.fetchall()
+        return render_template('view_users.html', users=users)
+    except Exception as e:
+        flash(f"An error occurred: {str(e)}", 'error')
+        return redirect('/admindashboard')
+
+@app.route('/view-complaints', methods=['GET', 'POST'])
+def view_complaints():
+    try:
+        with sqlite3.connect('database.db') as connection:
+            cursor = connection.cursor()
+
+            if request.method == 'POST':
+                # Handle admin reply
+                complaint_id = request.form['complaint_id']
+                reply = request.form['reply']
+                cursor.execute(
+                    'UPDATE complaints SET reply = ? WHERE id = ?', (reply, complaint_id)
+                )
+                connection.commit()
+                flash('Reply submitted successfully!', 'success')
+
+            # Fetch complaints
+            cursor.execute('SELECT id, username, complaint, reply FROM complaints')
+            complaints = cursor.fetchall()
+        return render_template('view_complaints.html', complaints=complaints)
+    except Exception as e:
+        flash(f"An error occurred: {str(e)}", 'error')
+        return redirect('/admindashboard')
+
+@app.route('/view-feedback')
+def view_feedback():
+    try:
+        with sqlite3.connect('database.db') as connection:
+            cursor = connection.cursor()
+            cursor.execute('SELECT username, feedback FROM feedback')
+            feedbacks = cursor.fetchall()
+        return render_template('view_feedback.html', feedbacks=feedbacks)
+    except Exception as e:
+        flash(f"An error occurred: {str(e)}", 'error')
+        return redirect('/admindashboard')
+
+@app.route('/view-reports')
+def view_reports():
+    try:
+        with sqlite3.connect('database.db') as connection:
+            cursor = connection.cursor()
+
+            # Total tasks
+            cursor.execute('SELECT COUNT(*) FROM tasks')
+            total_tasks = cursor.fetchone()[0]
+
+            # Completed tasks
+            cursor.execute('SELECT COUNT(*) FROM tasks WHERE status = "Completed"')
+            completed_tasks = cursor.fetchone()[0]
+
+            # Pending tasks
+            cursor.execute('SELECT COUNT(*) FROM tasks WHERE status = "Pending"')
+            pending_tasks = cursor.fetchone()[0]
+
+            # User activity (tasks per user)
+            cursor.execute(
+                'SELECT username, COUNT(*) FROM tasks GROUP BY username ORDER BY COUNT(*) DESC'
+            )
+            user_activity = cursor.fetchall()
+
+        return render_template(
+            'view_reports.html',
+            total_tasks=total_tasks,
+            completed_tasks=completed_tasks,
+            pending_tasks=pending_tasks,
+            user_activity=user_activity,
+        )
+    except Exception as e:
+        flash(f"An error occurred: {str(e)}", 'error')
+        return redirect('/admindashboard')
+    
+@app.route('/complaints', methods=['GET', 'POST'])
+def complaints():
+    username = session.get('username')  # Assuming you're storing the username in the session
+
+    if request.method == 'POST':
+        complaint = request.form['complaint']
+        
+        # Store the complaint in the database
+        try:
+            with sqlite3.connect('database.db') as connection:
+                cursor = connection.cursor()
+                cursor.execute('''
+                    INSERT INTO complaints (username, complaint) 
+                    VALUES (?, ?)
+                ''', (username, complaint))
+                connection.commit()
+                flash('Complaint submitted successfully!', 'success')
+        except Exception as e:
+            flash(f'An error occurred: {str(e)}', 'error')
+
+    # Retrieve all previous complaints for the current user
+    with sqlite3.connect('database.db') as connection:
+        cursor = connection.cursor()
+        cursor.execute('SELECT * FROM complaints WHERE username = ?', (username,))
+        complaints = cursor.fetchall()
+
+    return render_template('complaints.html', complaints=complaints)
+
+@app.route('/feedbacks', methods=['GET', 'POST'])
+def feedbacks():
+    username = session.get('username')  # Assuming you're storing the username in the session
+
+    if request.method == 'POST':
+        feedback = request.form['feedback']
+        
+        # Store the feedback in the database
+        try:
+            with sqlite3.connect('database.db') as connection:
+                cursor = connection.cursor()
+                cursor.execute('''
+                    INSERT INTO feedback (username, feedback) 
+                    VALUES (?, ?)
+                ''', (username, feedback))
+                connection.commit()
+                flash('Feedback submitted successfully!', 'success')
+        except Exception as e:
+            flash(f'An error occurred: {str(e)}', 'error')
+
+    return render_template('feedbacks.html')
+
 
 
 if __name__ == '__main__':

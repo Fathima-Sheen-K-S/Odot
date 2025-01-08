@@ -1,7 +1,8 @@
-# # import sqlite3
+import sqlite3
 
-# # with sqlite3.connect('database.db') as connection:
-# #     cursor = connection.cursor()
+with sqlite3.connect('database.db') as connection:
+     
+     cursor = connection.cursor()
 
 # #     # Create users table
 # #     cursor.execute('''
@@ -54,3 +55,33 @@
 # conn.close()
 
 # print("Category column added successfully to the 'tasks' table.")
+
+# cursor.execute('''
+#     CREATE TABLE IF NOT EXISTS admins (
+#         id INTEGER PRIMARY KEY AUTOINCREMENT,
+#         username TEXT UNIQUE NOT NULL,
+#         password TEXT NOT NULL,
+#         email TEXT NOT NULL
+#     )
+# ''')
+cursor.execute('''
+
+CREATE TABLE IF NOT EXISTS feedback (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    feedback TEXT NOT NULL
+);
+
+
+''')
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS complaints (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    complaint TEXT NOT NULL,
+    reply TEXT
+);
+
+               
+               ''')
