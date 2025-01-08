@@ -523,40 +523,7 @@ def view_feedback():
         flash(f"An error occurred: {str(e)}", 'error')
         return redirect('/admindashboard')
 
-@app.route('/view-reports')
-def view_reports():
-    try:
-        with sqlite3.connect('database.db') as connection:
-            cursor = connection.cursor()
 
-            # Total tasks
-            cursor.execute('SELECT COUNT(*) FROM tasks')
-            total_tasks = cursor.fetchone()[0]
-
-            # Completed tasks
-            cursor.execute('SELECT COUNT(*) FROM tasks WHERE status = "Completed"')
-            completed_tasks = cursor.fetchone()[0]
-
-            # Pending tasks
-            cursor.execute('SELECT COUNT(*) FROM tasks WHERE status = "Pending"')
-            pending_tasks = cursor.fetchone()[0]
-
-            # User activity (tasks per user)
-            cursor.execute(
-                'SELECT username, COUNT(*) FROM tasks GROUP BY username ORDER BY COUNT(*) DESC'
-            )
-            user_activity = cursor.fetchall()
-
-        return render_template(
-            'view_reports.html',
-            total_tasks=total_tasks,
-            completed_tasks=completed_tasks,
-            pending_tasks=pending_tasks,
-            user_activity=user_activity,
-        )
-    except Exception as e:
-        flash(f"An error occurred: {str(e)}", 'error')
-        return redirect('/admindashboard')
     
 @app.route('/complaints', methods=['GET', 'POST'])
 def complaints():

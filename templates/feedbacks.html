@@ -33,7 +33,7 @@
             background-color: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
-            text-align: center; /* Centering the content in the container */
+            text-align: center;
         }
 
         h1 {
@@ -44,7 +44,7 @@
         h2 {
             font-size: 24px;
             margin-bottom: 20px;
-            text-align: center; /* Center the heading */
+            text-align: center;
         }
 
         textarea {
@@ -55,7 +55,7 @@
             border-radius: 8px;
             font-size: 16px;
             margin-bottom: 20px;
-            text-align: center; /* Optionally center the text inside textarea */
+            text-align: center;
         }
 
         button {
@@ -67,7 +67,7 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            margin: 0 auto; /* Centers the button */
+            margin: 0 auto;
             display: block;
         }
 
@@ -81,6 +81,8 @@
             color: #1F3A64;
             text-decoration: none;
             font-weight: bold;
+            display: block; /* Ensure it is on its own line */
+            text-align: center; /* Center the link */
         }
 
         .back-link:hover {
@@ -116,7 +118,7 @@
 <body>
 
 <header>
-    <h1>Feedback - ODOT Task Manager</h1>
+    <h1>Post your valuable feedbacks...</h1>
 </header>
 
 <div class="container">
@@ -125,9 +127,11 @@
         <textarea name="feedback" placeholder="Give your feedback..." required></textarea>
         <button type="submit">Submit Feedback</button>
     </form>
+    <a href="/userhome" class="back-link">Back to Home</a>
 </div>
 
-<a href="/admindashboard" class="back-link">Back to Dashboard</a>
+<!-- Back to Home link -->
+
 
 <footer>
     <p>© 2024 ODOT - All Rights Reserved</p>
